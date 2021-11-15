@@ -1,1 +1,1 @@
-# CS492_covid19_detection
+# CS489_covid19_detection
