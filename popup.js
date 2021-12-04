@@ -1,10 +1,15 @@
+let debugMessage = document.getElementById("debug");
+
 window.addEventListener("load", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   const xhr = new XMLHttpRequest();
   xhr.open('POST', 'http://localhost:8123/detect/');
   xhr.onload = () => {
-    if (xhr.responseText === 'fake'){
+
+    let response = JSON.parse(xhr.response);
+
+    if (response.out == false){
       document.body.style.height = '320px';
 
       let detectMessage = document.getElementById("detectMessage");
@@ -34,10 +39,24 @@ window.addEventListener("load", async () => {
       let button1 = document.createElement("button");
       button1.innerText = "Highlight";
       button1.style.cssText = buttonStyle;
+      button1.onclick = () => {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          function: applyEffect,
+          args: [response, "highlight"]
+        });
+      };
 
       let button2 = document.createElement("button");
       button2.innerText = "Blur";
       button2.style.cssText = buttonStyle;
+      button2.onclick = () => {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          function: applyEffect,
+          args: [response, "blur"]
+        });
+      };
 
       buttonBox.append(button1);
       buttonBox.append(button2);
@@ -45,16 +64,67 @@ window.addEventListener("load", async () => {
       explainBox.append(explain1);
       explainBox.append(explain2);
       explainBox.append(buttonBox);
-
-
-      // chrome.scripting.executeScript({
-      //   target: { tabId: tab.id },
-      //   function: popupWarning,
-      // });
     }
   };
   xhr.send(tab.url);
 });
+
+function applyEffect(response, effect) {
+  let tabDebug = document.createElement("p");
+  let pTags = document.getElementsByTagName("p");
+
+  for (var i = 0; i < pTags.length; i++){
+    var remain = pTags[i].textContent;
+    pTags[i].innerHTML = "";
+    for (var j =0; j < response.attention.length; j++){
+      if (remain.includes(response.attention[j][0])) {
+        let splitted = remain.split(response.attention[j][0]);
+
+        pTags[i].append(splitted[0]);
+
+        let hightlight = document.createElement("span");
+        hightlight.innerText = response.attention[j][0];
+
+        if (effect == "highlight"){
+          if (response.attention[j][1] > 0.5 && response.attention[j][1] <= 0.6){
+            hightlight.style.background = 'rgb(255, 200, 200)';
+          }
+          if (response.attention[j][1] > 0.6 && response.attention[j][1] <= 0.7){
+            hightlight.style.background = 'rgb(255, 160, 160)';
+          }
+          if (response.attention[j][1] > 0.7 && response.attention[j][1] <= 0.8){
+            hightlight.style.background = 'rgb(255, 120, 120)';
+          }
+          if (response.attention[j][1] > 0.8 && response.attention[j][1] <= 0.9){
+            hightlight.style.background = 'rgb(255, 80, 80)';
+          }
+          if (response.attention[j][1] > 0.9 && response.attention[j][1] <= 1){
+            hightlight.style.background = 'rgb(255, 40, 40)';
+          }
+        }
+        else {
+          // blurring method 1 - not working
+          // highlight.style.webkitFilter = "blur(5px)";
+
+          // blurring method 2 - not working
+          // hightlight.style.color = 'transparent';
+          // highlight.style.textShadow = '0 0 0 black';
+
+          hightlight.style.color = 'rgba(0, 0, 0, 0.5)';
+        }
+
+        pTags[i].append(hightlight);
+        remain = splitted[1];
+      }
+    }
+    pTags[i].append(remain);
+  }
+
+  // tabDebug.innerText = response.attention.length;
+
+  document.body.appendChild(tabDebug);
+}
+
 
 // Not Used
 function popupWarning() {
