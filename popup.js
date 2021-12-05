@@ -1,4 +1,4 @@
-let debugMessage = document.getElementById("debug");
+// let debugMessage = document.getElementById("debug");
 
 window.addEventListener("load", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 
     let response = JSON.parse(xhr.response);
 
-    if (response.out == false){
+    if (response.out == true){
       document.body.style.height = '320px';
 
       let detectMessage = document.getElementById("detectMessage");
