@@ -84,50 +84,44 @@ function applyEffect(response, effect) {
     }
 
     if (jArray.length > 0) {
-      var remain = pTags[i].textContent;
-      pTags[i].innerHTML = "";
-      for (var k =0; k < jArray.length; k++){
-        if (remain.includes(response.attention[jArray[k]][0])) {
-          let splitted = remain.split(response.attention[jArray[k]][0]);
+      if (effect == "blur"){
+        pTags[i].style.filter = "blur(5px)";
+      }
+      else {
+        var remain = pTags[i].textContent;
+        pTags[i].innerHTML = "";
 
-          pTags[i].append(splitted[0]);
+        for (var k =0; k < jArray.length; k++){
+          if (remain.includes(response.attention[jArray[k]][0])) {
+            let splitted = remain.split(response.attention[jArray[k]][0]);
 
-          let hightlight = document.createElement("span");
-          hightlight.innerText = response.attention[jArray[k]][0];
+            pTags[i].append(splitted[0]);
 
-          if (effect == "highlight"){
+            let hightlight = document.createElement("span");
+            hightlight.innerText = response.attention[jArray[k]][0];
+
             if (response.attention[jArray[k]][1] > 0.5 && response.attention[jArray[k]][1] <= 0.6){
               hightlight.style.background = 'rgb(255, 200, 200)';
             }
-            if (response.attention[jArray[k]][1] > 0.6 && response.attention[jArray[k]][1] <= 0.7){
+            else if (response.attention[jArray[k]][1] > 0.6 && response.attention[jArray[k]][1] <= 0.7){
               hightlight.style.background = 'rgb(255, 160, 160)';
             }
-            if (response.attention[jArray[k]][1] > 0.7 && response.attention[jArray[k]][1] <= 0.8){
+            else if (response.attention[jArray[k]][1] > 0.7 && response.attention[jArray[k]][1] <= 0.8){
               hightlight.style.background = 'rgb(255, 120, 120)';
             }
-            if (response.attention[jArray[k]][1] > 0.8 && response.attention[jArray[k]][1] <= 0.9){
+            else if (response.attention[jArray[k]][1] > 0.8 && response.attention[jArray[k]][1] <= 0.9){
               hightlight.style.background = 'rgb(255, 80, 80)';
             }
-            if (response.attention[jArray[k]][1] > 0.9 && response.attention[jArray[k]][1] <= 1){
+            else if (response.attention[jArray[k]][1] > 0.9 && response.attention[jArray[k]][1] <= 1){
               hightlight.style.background = 'rgb(255, 40, 40)';
             }
+
+            pTags[i].append(hightlight);
+            remain = splitted[1];
           }
-          else {
-            // blurring method 1 - not working
-            // highlight.style.webkitFilter = "blur(5px)";
-
-            // blurring method 2 - not working
-            // hightlight.style.color = 'transparent';
-            // highlight.style.textShadow = '0 0 0 black';
-
-            hightlight.style.color = 'rgba(0, 0, 0, 0.5)';
-          }
-
-          pTags[i].append(hightlight);
-          remain = splitted[1];
         }
+        pTags[i].append(remain);
       }
-      pTags[i].append(remain);
     }
   }
 
