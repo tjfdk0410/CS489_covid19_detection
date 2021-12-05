@@ -74,50 +74,61 @@ function applyEffect(response, effect) {
   let pTags = document.getElementsByTagName("p");
 
   for (var i = 0; i < pTags.length; i++){
-    var remain = pTags[i].textContent;
-    pTags[i].innerHTML = "";
+    var jArray = [];
+
+    // check if fake sentences exist in the paragraph
     for (var j =0; j < response.attention.length; j++){
-      if (remain.includes(response.attention[j][0])) {
-        let splitted = remain.split(response.attention[j][0]);
-
-        pTags[i].append(splitted[0]);
-
-        let hightlight = document.createElement("span");
-        hightlight.innerText = response.attention[j][0];
-
-        if (effect == "highlight"){
-          if (response.attention[j][1] > 0.5 && response.attention[j][1] <= 0.6){
-            hightlight.style.background = 'rgb(255, 200, 200)';
-          }
-          if (response.attention[j][1] > 0.6 && response.attention[j][1] <= 0.7){
-            hightlight.style.background = 'rgb(255, 160, 160)';
-          }
-          if (response.attention[j][1] > 0.7 && response.attention[j][1] <= 0.8){
-            hightlight.style.background = 'rgb(255, 120, 120)';
-          }
-          if (response.attention[j][1] > 0.8 && response.attention[j][1] <= 0.9){
-            hightlight.style.background = 'rgb(255, 80, 80)';
-          }
-          if (response.attention[j][1] > 0.9 && response.attention[j][1] <= 1){
-            hightlight.style.background = 'rgb(255, 40, 40)';
-          }
-        }
-        else {
-          // blurring method 1 - not working
-          // highlight.style.webkitFilter = "blur(5px)";
-
-          // blurring method 2 - not working
-          // hightlight.style.color = 'transparent';
-          // highlight.style.textShadow = '0 0 0 black';
-
-          hightlight.style.color = 'rgba(0, 0, 0, 0.5)';
-        }
-
-        pTags[i].append(hightlight);
-        remain = splitted[1];
+      if (pTags[i].textContent.includes(response.attention[j][0])) {
+        jArray.push(j);
       }
     }
-    pTags[i].append(remain);
+
+    if (jArray.length > 0) {
+      var remain = pTags[i].textContent;
+      pTags[i].innerHTML = "";
+      for (var k =0; k < jArray.length; k++){
+        if (remain.includes(response.attention[jArray[k]][0])) {
+          let splitted = remain.split(response.attention[jArray[k]][0]);
+
+          pTags[i].append(splitted[0]);
+
+          let hightlight = document.createElement("span");
+          hightlight.innerText = response.attention[jArray[k]][0];
+
+          if (effect == "highlight"){
+            if (response.attention[jArray[k]][1] > 0.5 && response.attention[jArray[k]][1] <= 0.6){
+              hightlight.style.background = 'rgb(255, 200, 200)';
+            }
+            if (response.attention[jArray[k]][1] > 0.6 && response.attention[jArray[k]][1] <= 0.7){
+              hightlight.style.background = 'rgb(255, 160, 160)';
+            }
+            if (response.attention[jArray[k]][1] > 0.7 && response.attention[jArray[k]][1] <= 0.8){
+              hightlight.style.background = 'rgb(255, 120, 120)';
+            }
+            if (response.attention[jArray[k]][1] > 0.8 && response.attention[jArray[k]][1] <= 0.9){
+              hightlight.style.background = 'rgb(255, 80, 80)';
+            }
+            if (response.attention[jArray[k]][1] > 0.9 && response.attention[jArray[k]][1] <= 1){
+              hightlight.style.background = 'rgb(255, 40, 40)';
+            }
+          }
+          else {
+            // blurring method 1 - not working
+            // highlight.style.webkitFilter = "blur(5px)";
+
+            // blurring method 2 - not working
+            // hightlight.style.color = 'transparent';
+            // highlight.style.textShadow = '0 0 0 black';
+
+            hightlight.style.color = 'rgba(0, 0, 0, 0.5)';
+          }
+
+          pTags[i].append(hightlight);
+          remain = splitted[1];
+        }
+      }
+      pTags[i].append(remain);
+    }
   }
 
   // tabDebug.innerText = response.attention.length;
