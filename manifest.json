@@ -1,0 +1,27 @@
+{
+  "name": "Fake News Detector",
+  "description": "Detect fake news related to COVID-19",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "activeTab", "scripting", "webNavigation", "tabs"],
+  "host_permissions": ["http://localhost/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/images/fake_news16.png",
+      "32": "/images/fake_news32.png",
+      "48": "/images/fake_news48.png",
+      "128": "/images/fake_news128.png"
+    }
+  },
+  "icons": {
+    "16": "/images/fake_news16.png",
+    "32": "/images/fake_news32.png",
+    "48": "/images/fake_news48.png",
+    "128": "/images/fake_news128.png"
+  },
+  "options_page": "options.html"
+}

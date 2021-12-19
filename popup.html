@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline';"> -->
+  </head>
+  <body style="background: #F3F3F3; width: 300px; height: 350px; ">
+    <div style="width: 290px; height: 50px; margin: auto; display: flex; flex-direction: row; justify-content: center;">
+      <img src="/images/fake_news128.png" style="width: 40px; height: 40px; margin: auto;">
+      <p style="font-size: 24px; font-weight: bold; text-align: center; vertical-align: middle; margin: auto;"> Fake News Detector </p>
+    </div>
+    <div id="explainBox" style="background: white; width: 290px; margin: auto; margin-top: 15px;">
+      <p id="detectMessage" style="color: #0BD999; font-size: 20px; font-weight: bold; text-align: center; margin: auto; padding: 10px;">Nothing Detected</p>
+      <hr style="width:90%">
+      <img id="image" src="/images/notfound.png" style="width: 290px; height: 220px;">
+    </div>
+    <!-- <p id="debug">Debug</p> -->
+    <script src="popup.js"></script>
+  </body>
+</html>
