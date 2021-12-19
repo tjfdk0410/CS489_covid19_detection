@@ -1,7 +1,7 @@
 # CS489_covid19_detection
 
 
-# For training and testing model
+## For training and testing model
 python run_covid.py \
   --model_name_or_path bert-base-cased \
   --tokenizer_name bert-base-cased \
