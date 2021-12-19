@@ -1,21 +1,18 @@
 # CS489_covid19_detection
 
 
-## For training and testing model
-python run_covid.py \
-  --model_name_or_path bert-base-cased \
-  --tokenizer_name bert-base-cased \
-  --do_train \
-  --do_eval \
-  --do_predict \
-  --train_file=./train_aug.csv \
-  --validation_file=./val.csv \
-  --test_file=./test.csv \
-  --max_seq_length 140 \
-  --per_device_train_batch_size 64 \
-  --learning_rate 2e-5 \
-  --num_train_epochs 12 \
-  --output_dir ./result/maxseq140_batch64_ep12_aug
+### Train model
 
+```sh run_covid.sh```
 
+### Run server
 
+```python server.py```
+
+### How to use Web extension
+
+1. Open the Extension Management page by navigating to ```chrome://extensions```.
+2. Enable Developer Mode by clicking the toggle switch next to **Developer mode**.
+3. Click the **Load unpacked** button and select the repository directory.
+4. Click the **extensions menu** (the puzzle piece) and **pin** the extension (Fake News Detector).
+5. Then the extension will display the icon in the toolbar. **Click the icon**.
